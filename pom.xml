@@ -15,6 +15,27 @@
 		<artifactId>download-x-all</artifactId>
 		<version>0.1.0.0-SNAPSHOT</version>
 	</parent>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>indvdum</id>
+			<name>David Veliev</name>
+			<email>gotoindvdum@gmail.com</email>
+			<url>http://indvdum.ru</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+4</timezone>
+		</developer>
+  </developers>
 	<build>
 		<plugins>
 			<plugin>
