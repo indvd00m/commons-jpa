@@ -5,6 +5,7 @@
 	<groupId>ru.indvdum.jpa</groupId>
 	<artifactId>commons-jpa</artifactId>
 	<name>commons-jpa</name>
+	<version>${commons-jpa.version}</version>
 	<packaging>jar</packaging>
 	<description>commons-jpa</description>
 	<properties>
