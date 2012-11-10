@@ -70,9 +70,5 @@ public class DatabaseInitializer {
 		dataSource.setMaxActive(2);
 
 		init(dataSource);
-
-		JPAPropertySelector.setSystemProperty(JPAPropertySelector.RUNTIMEENHANCEMENT, "supported");
-		JPAPropertySelector.setSystemProperty(JPAPropertySelector.SHOWSQL, "true");
-		JPAPropertySelector.setSystemProperty(JPAPropertySelector.SYNCHRONIZEDB, "true");
 	}
 }

@@ -2,6 +2,7 @@ package ru.indvdum.jpa.tests;
 
 import org.junit.BeforeClass;
 
+import ru.indvdum.jpa.dao.JPAPropertySelector;
 import ru.indvdum.jpa.init.DatabaseInitializer;
 
 /**
@@ -13,6 +14,9 @@ public abstract class AbstractJPATest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		JPAPropertySelector.setSystemProperty(JPAPropertySelector.RUNTIMEENHANCEMENT, "supported");
+		JPAPropertySelector.setSystemProperty(JPAPropertySelector.SHOWSQL, "true");
+		JPAPropertySelector.setSystemProperty(JPAPropertySelector.SYNCHRONIZEDB, "true");
 		DatabaseInitializer.init();
 	}
 
