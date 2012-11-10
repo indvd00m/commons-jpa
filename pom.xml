@@ -109,5 +109,10 @@
 			<artifactId>jackson-jaxrs</artifactId>
 			<version>${jackson-jaxrs.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons-configuration.version}</version>
+		</dependency>
 	</dependencies>
 </project>

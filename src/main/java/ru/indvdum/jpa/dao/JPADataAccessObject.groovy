@@ -1,39 +1,18 @@
-package ru.indvdum.jpa.daoimport java.sql.Connection
-import java.sql.SQLException
-import java.util.ResourceBundle;import java.util.Map.Entry
-
-import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
-import javax.persistence.EntityTransaction
-import javax.persistence.NoResultException
-import javax.persistence.Persistence
-import javax.persistence.Query
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
-import javax.sql.DataSource
-
-import org.apache.openjpa.conf.OpenJPAConfiguration
-import org.apache.openjpa.persistence.OpenJPAEntityManagerFactorySPI
-import org.apache.openjpa.persistence.OpenJPAPersistence
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import ru.indvdum.jpa.props.Props;
+package ru.indvdum.jpa.daoimport java.sql.Connectionimport java.sql.SQLExceptionimport java.util.Map.Entryimport javax.persistence.EntityManagerimport javax.persistence.EntityManagerFactoryimport javax.persistence.EntityTransactionimport javax.persistence.NoResultExceptionimport javax.persistence.Persistenceimport javax.persistence.Queryimport javax.persistence.criteria.CriteriaBuilderimport javax.persistence.criteria.CriteriaQueryimport javax.persistence.criteria.Predicateimport javax.persistence.criteria.Rootimport javax.sql.DataSourceimport org.apache.commons.configuration.XMLConfigurationimport org.apache.openjpa.conf.OpenJPAConfigurationimport org.apache.openjpa.persistence.OpenJPAEntityManagerFactorySPIimport org.apache.openjpa.persistence.OpenJPAPersistenceimport org.slf4j.Loggerimport org.slf4j.LoggerFactoryimport ru.indvdum.jpa.props.Props
 /**
  * @author indvdum (gotoindvdum[at]gmail[dot]com)
  * @since 08.11.2012 23:35:04
  *
  */
 public class JPADataAccessObject {
-	protected static String persistenceUnitName = null;
+	protected static Logger log = LoggerFactory.getLogger(JPADataAccessObject.class.getSimpleName());
+	protected static String persistenceUnitName = null;
 	protected static EntityManagerFactory emf = Persistence.createEntityManagerFactory(getPersistenceUnitName(), JPAPropertySelector.select());
 	protected EntityManager em = emf.createEntityManager();
-	final static Logger log = LoggerFactory.getLogger(JPADataAccessObject.class.getSimpleName());
 
 	JPADataAccessObject() {
 		em.isOpen();
-	}		protected static String getPersistenceUnitName() {		if (persistenceUnitName != null)			return persistenceUnitName;		if (persistenceUnitName == null)			persistenceUnitName = System.getProperty(Props.PERSISTANCE_UNIT_NAME_PROPERTY);		if (persistenceUnitName == null)			persistenceUnitName = ResourceBundle.getBundle(Props.JPADAO_PROPERTY_FILE).getString(Props.PERSISTANCE_UNIT_NAME_PROPERTY);		if (persistenceUnitName == null)			persistenceUnitName = "database";		return persistenceUnitName;	}
+	}		protected static String getPersistenceUnitName() {		if (persistenceUnitName != null)			return persistenceUnitName;		if (persistenceUnitName == null)			persistenceUnitName = System.getProperty(Props.PERSISTANCE_UNIT_NAME_PROPERTY);		if (persistenceUnitName == null) {			try {				persistenceUnitName = ResourceBundle.getBundle(Props.JPADAO_PROPERTY_FILE).getString(Props.PERSISTANCE_UNIT_NAME_PROPERTY);			} catch (MissingResourceException e) {				log.info("Configuration file " + Props.JPADAO_PROPERTY_FILE + ".properties not found");			}		}		if (persistenceUnitName == null) {			XMLConfiguration conf = new XMLConfiguration("META-INF/persistence.xml");			persistenceUnitName = conf.getString("persistence-unit[@name]");		}		if (persistenceUnitName == null)			persistenceUnitName = "database";		return persistenceUnitName;	}
 
 	public static Connection getSQLConnection() throws SQLException {
 		OpenJPAEntityManagerFactorySPI openjpaemf = (OpenJPAEntityManagerFactorySPI) OpenJPAPersistence.cast(emf);

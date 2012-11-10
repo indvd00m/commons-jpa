@@ -1,13 +1,17 @@
 package ru.indvdum.jpa.init;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ru.indvdum.jpa.dao.JPAPropertySelector;
 import ru.indvdum.jpa.props.Props;
 
 /**
@@ -17,22 +21,33 @@ import ru.indvdum.jpa.props.Props;
  */
 public class DatabaseInitializer {
 
+	protected static Logger log = LoggerFactory.getLogger(DatabaseInitializer.class.getSimpleName());
+
 	protected static String dataSource = null;
 
-	protected static String getDataSourceName() {
+	protected static String getDataSourceName() throws ConfigurationException {
 		if (dataSource != null)
 			return dataSource;
 
 		if (dataSource == null)
 			dataSource = System.getProperty(Props.DATA_SOURCE_PROPERTY);
-		if (dataSource == null)
-			dataSource = ResourceBundle.getBundle(Props.JPADAO_PROPERTY_FILE).getString(Props.DATA_SOURCE_PROPERTY);
+		if (dataSource == null) {
+			try {
+				dataSource = ResourceBundle.getBundle(Props.JPADAO_PROPERTY_FILE).getString(Props.DATA_SOURCE_PROPERTY);
+			} catch (MissingResourceException e) {
+				log.info("Configuration file " + Props.JPADAO_PROPERTY_FILE + ".properties not found");
+			}
+		}
+		if (dataSource == null) {
+			XMLConfiguration conf = new XMLConfiguration("META-INF/persistence.xml");
+			dataSource = conf.getString("persistence-unit.non-jta-data-source");
+		}
 		if (dataSource == null)
 			dataSource = "jdbc/database";
 		return dataSource;
 	}
 
-	public static void init() throws NamingException {
+	public static void init() throws NamingException, ConfigurationException {
 		String url = System.getProperty(Props.DATABASE_URL_PROPERTY);
 		String driver = System.getProperty(Props.DATABASE_DRIVER_PROPERTY);
 		String username = System.getProperty(Props.DATABASE_USERNAME_PROPERTY);
@@ -52,14 +67,14 @@ public class DatabaseInitializer {
 			initDerby();
 	}
 
-	public static void init(BasicDataSource dataSource) throws NamingException {
+	public static void init(BasicDataSource dataSource) throws NamingException, ConfigurationException {
 		InitialContext context = new InitialContext();
 		BasicDataSource existedDataSource = (BasicDataSource) context.lookup(getDataSourceName());
 		if (existedDataSource == null)
 			context.bind(getDataSourceName(), dataSource);
 	}
 
-	public static void initDerby() throws NamingException {
+	public static void initDerby() throws NamingException, ConfigurationException {
 		System.setProperty("derby.stream.error.field", "java.lang.System.err");
 
 		BasicDataSource dataSource = new BasicDataSource();
