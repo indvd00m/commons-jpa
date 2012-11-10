@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory
  */
 public class JPADataAccessObject {
 	protected static String persistenceUnitName = null;
-	protected static EntityManagerFactory emf = Persistence.createEntityManagerFactory(getPersistenceUnitName(), PropertySelector.select());
+	protected static EntityManagerFactory emf = Persistence.createEntityManagerFactory(getPersistenceUnitName(), JPAPropertySelector.select());
 	protected EntityManager em = emf.createEntityManager();
 	final static Logger log = LoggerFactory.getLogger(JPADataAccessObject.class.getSimpleName());
 

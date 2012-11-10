@@ -5,7 +5,7 @@ package ru.indvdum.jpa.dao
  * @since 03.11.2011 13:53:32
  *
  */
-class PropertySelector {
+class JPAPropertySelector {
 	public static final String SHOWSQL = "custom.showsql"
 	public static final String SYNCHRONIZEDB = "custom.synchronize"
 	public static final String SCHEMANAME = "custom.schemaname"
