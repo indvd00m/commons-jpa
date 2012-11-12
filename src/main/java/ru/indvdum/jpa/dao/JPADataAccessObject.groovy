@@ -35,9 +35,29 @@ public class JPADataAccessObject {
 	protected static String persistenceUnitName = null;
 	protected static EntityManagerFactory emf = Persistence.createEntityManagerFactory(getPersistenceUnitName(), JPAPropertySelector.select());
 	protected EntityManager em = emf.createEntityManager();
+	protected EntityTransaction tx = null;
 
 	JPADataAccessObject() {
-		em.isOpen();
+		tx = em.getTransaction();
+		tx.begin();
+	}
+
+	void close() {
+		commit()
+		em.close()
+		em = null
+	}
+
+	void commit() {
+		if(tx != null && tx.isActive()) {
+			tx.commit()
+		}
+	}
+
+	void rollback() {
+		if(tx != null && tx.isActive()) {
+			tx.rollback()
+		}
 	}
 
 	protected static String getPersistenceUnitName() {
@@ -67,11 +87,6 @@ public class JPADataAccessObject {
 		OpenJPAConfiguration conf = openjpaemf.getConfiguration();
 		DataSource ds = (DataSource) conf.getConnectionFactory();
 		return ds.getConnection();
-	}
-
-	void close() {
-		em.close()
-		em = null
 	}
 
 	public <T> T mergeAndRefresh(T object) {
@@ -108,11 +123,8 @@ public class JPADataAccessObject {
 	}
 
 	synchronized boolean persistAndRemove(Object[] persistanceQueue, Object[] removeQueue) {
-		EntityTransaction tx = null
 
 		try {
-			tx = em.getTransaction()
-			tx.begin()
 
 			if(persistanceQueue != null) {
 				for(object in persistanceQueue) {
@@ -129,17 +141,10 @@ public class JPADataAccessObject {
 					}
 				}
 			}
-
-			tx.commit()
 		}
 		catch(Throwable t) {
 			log.error("Error while synchronizing with Database: ", t);
-
-			if(tx != null && tx.isActive()) {
-				tx.rollback()
-			}
-
-			return false
+			return false;
 		}
 
 		return true
@@ -199,6 +204,10 @@ public class JPADataAccessObject {
 			log.error("Error while searching object in Database: ", e);
 		}
 		return result;
+	}
+
+	public <T> T find(Class<T> entityClass, String field, Object value) {
+		return find(entityClass, ["${field}": value], null);
 	}
 
 	public <T> List<T> list(Class<T> entityClass) {
