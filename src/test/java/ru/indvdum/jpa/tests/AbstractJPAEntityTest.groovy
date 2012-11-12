@@ -33,12 +33,16 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 	protected def uniqueValue = 1
 	protected JPADataAccessObject dao = null
 	protected Set toRemove = new HashSet()
+	protected Map<Class, Integer> existedEntitiesCount = [:]
 
 	@Test
 	public void testEntity() {
 		dao = createDAO()
 		try {
 			testEntity(getEntityClass())
+		} catch (Throwable t) {
+			dao.rollback()
+			throw t
 		} finally {
 			dao.close()		
 		}
@@ -71,7 +75,7 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 				assert it.class.isAssignableFrom(it2.class)
 			}.size() == toRemove.findAll { it2 ->
 				it.class.isAssignableFrom(it2.class)
-			}.size()
+			}.size() + existedEntitiesCount[it.class]
 		}
 
 		// updating
@@ -100,6 +104,8 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 		def entity = entityClass.newInstance()
 		assert entity.class == entityClass
 		toRemove.add(entity)
+		if (!existedEntitiesCount.containsKey(entityClass))
+			existedEntitiesCount[entityClass] = dao.list(entityClass).size()
 		
 		Map<String, Object> fieldsValues = updateFields(entity)
 		assert dao.persist(entity)
