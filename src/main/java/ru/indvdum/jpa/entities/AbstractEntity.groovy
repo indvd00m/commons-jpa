@@ -129,4 +129,8 @@ abstract class AbstractEntity implements Serializable {
 		}
 		return result
 	}
+	
+	protected def callMethod(method, Object ... args) {
+		"$method"(*args)
+	}
 }
