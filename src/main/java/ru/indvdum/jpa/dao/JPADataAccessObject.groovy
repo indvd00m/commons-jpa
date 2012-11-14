@@ -201,7 +201,7 @@ public class JPADataAccessObject {
 		try {
 			result = em.createQuery(query).getSingleResult();
 		} catch (NoResultException e) {
-			log.error("Error while searching object in Database: ", e);
+			log.info("Object not found in Database: " + e.getMessage());
 		}
 		return result;
 	}
