@@ -59,6 +59,10 @@ public class JPADataAccessObject {
 			tx.rollback()
 		}
 	}
+	
+	void detach(Object entity) {
+		em.detach(entity);
+	}
 
 	protected static String getPersistenceUnitName() {
 		if (persistenceUnitName != null)
