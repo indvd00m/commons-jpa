@@ -162,6 +162,9 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 			newValue = (float) uniqueValue++ % Float.MAX_VALUE + 1f
 		} else if(type.toString() == 'double' || type == Double) {
 			newValue = (double) uniqueValue++ % Double.MAX_VALUE + 1d
+		} else if(Number.class.isAssignableFrom(type)) {
+			// trying to use constructor with int argument
+			newValue = type.newInstance(uniqueValue++ % Byte.MAX_VALUE + 1i)
 		} else if(type == String.class) {
 			newValue = (String) "test${uniqueValue++}"
 		} else if(type instanceof Class && (type as Class).annotations.find {it instanceof Entity} != null) { // modifying of a primary keys is deprecated
