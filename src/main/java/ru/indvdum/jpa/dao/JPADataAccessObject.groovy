@@ -59,7 +59,7 @@ public class JPADataAccessObject {
 			tx.rollback()
 		}
 	}
-	
+
 	void detach(Object entity) {
 		em.detach(entity);
 	}
@@ -154,8 +154,10 @@ public class JPADataAccessObject {
 		return true
 	}
 
-	public <T> T find(Class<T> entityClass, Object primaryKey) {
-		return em.find(entityClass, primaryKey);
+	public <T> List<T> list(Class<T> entityClass) {
+		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entityClass);
+		query.from(entityClass);
+		return new ArrayList(em.createQuery(query).getResultList());
 	}
 
 	public <T> List<T> list(Class<T> entityClass, Map<String, Object> equalProperties, Map<String, Object> notEqualProperties) {
@@ -179,6 +181,29 @@ public class JPADataAccessObject {
 		}
 		query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
 		return em.createQuery(query).getResultList();
+	}
+
+	public <T> List<T> list(Class<T> entityClass, Object ... equalFieldNamesAndValues) {
+		if (equalFieldNamesAndValues.length % 2 != 0)
+			throw new RuntimeException("Illegal arguments count: ${equalFieldNamesAndValues.length}");
+		Map fieldValues = [:];
+		for (int i = 0; i < equalFieldNamesAndValues.length;) {
+			String field = (String) equalFieldNamesAndValues[i++];
+			Object value = equalFieldNamesAndValues[i++];
+			fieldValues["${field}"] = value;
+		}
+		return list(entityClass, fieldValues, null);
+	}
+
+	public List list(String jpql, Object ... paramValues) {
+		Query query = em.createQuery(jpql);
+		for (int i = 0; i < paramValues.length; i++)
+			query.setParameter(i + 1, paramValues[i]);
+		return query.getResultList();
+	}
+
+	public <T> T find(Class<T> entityClass, Object primaryKey) {
+		return em.find(entityClass, primaryKey);
 	}
 
 	public <T> T find(Class<T> entityClass, Map<String, Object> equalProperties, Map<String, Object> notEqualProperties) {
@@ -210,14 +235,24 @@ public class JPADataAccessObject {
 		return result;
 	}
 
-	public <T> T find(Class<T> entityClass, String field, Object value) {
-		return find(entityClass, ["${field}": value], null);
+	public <T> T find(Class<T> entityClass, Object ... equalFieldNamesAndValues) {
+		if (equalFieldNamesAndValues.length % 2 != 0)
+			throw new RuntimeException("Illegal arguments count: ${equalFieldNamesAndValues.length}");
+		Map fieldValues = [:];
+		for (int i = 0; i < equalFieldNamesAndValues.length;) {
+			String field = (String) equalFieldNamesAndValues[i++];
+			Object value = equalFieldNamesAndValues[i++];
+			fieldValues["${field}"] = value;
+		}
+		return find(entityClass, fieldValues, null);
 	}
-
-	public <T> List<T> list(Class<T> entityClass) {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entityClass);
-		query.from(entityClass);
-		return new ArrayList(em.createQuery(query).getResultList());
+	
+	
+	public Object find(String jpql, Object ... paramValues) {
+		Query query = em.createQuery(jpql);
+		for (int i = 0; i < paramValues.length; i++)
+			query.setParameter(i + 1, paramValues[i]);
+		return query.getSingleResult();
 	}
 
 	public boolean contains(Collection entities) {
