@@ -5,16 +5,9 @@
 	<groupId>ru.indvdum.jpa</groupId>
 	<artifactId>commons-jpa</artifactId>
 	<name>commons-jpa</name>
-	<version>${commons-jpa.version}</version>
+	<version>0.2.0.0</version>
 	<packaging>jar</packaging>
 	<description>commons-jpa</description>
-	<properties>
-	</properties>
-	<parent>
-		<groupId>ru.bazon.download-x</groupId>
-		<artifactId>download-x-all</artifactId>
-		<version>0.1.0.0-SNAPSHOT</version>
-	</parent>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -35,16 +28,65 @@
 			</roles>
 			<timezone>+4</timezone>
 		</developer>
-  </developers>
+	</developers>
+	<properties>
+		<!-- Dependencies -->
+		<commons-configuration.version>1.9</commons-configuration.version>
+		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<groovy-eclipse-compiler.version>2.5.1-1</groovy-eclipse-compiler.version>
+		<groovy.version>2.0.5</groovy.version>
+		<jackson-jaxrs.version>1.9.11</jackson-jaxrs.version>
+		<junit.version>4.11</junit.version>
+		<openjpa.version>2.2.1</openjpa.version>
+		<slf4j-simple.version>1.7.2</slf4j-simple.version>
+
+		<!-- Plugins -->
+		<build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
+		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+	</properties>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<compilerArgument>nowarn</compilerArgument>
-					 <verbose>true</verbose>
+					<verbose>true</verbose>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -113,6 +155,17 @@
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>${commons-configuration.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j-simple.version}</version>
 		</dependency>
 	</dependencies>
 </project>
