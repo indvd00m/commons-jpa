@@ -22,6 +22,7 @@ import org.apache.openjpa.persistence.OpenJPAPersistence
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import ru.indvdum.jpa.entities.AbstractEntity
 import ru.indvdum.jpa.props.Props
 
 /**
@@ -98,6 +99,10 @@ public class JPADataAccessObject {
 		em.refresh(merged)
 
 		merged
+	}
+
+	public <T extends AbstractEntity> T read(T object) {
+		return find(object.class, object.getIdentifierValue())
 	}
 
 	public <T> T merge(T object) {
@@ -246,8 +251,8 @@ public class JPADataAccessObject {
 		}
 		return find(entityClass, fieldValues, null);
 	}
-	
-	
+
+
 	public Object find(String jpql, Object ... paramValues) {
 		Query query = em.createQuery(jpql);
 		for (int i = 0; i < paramValues.length; i++)
