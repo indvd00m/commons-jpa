@@ -17,7 +17,7 @@ import javax.persistence.Transient
 import org.junit.Test
 
 import ru.indvdum.jpa.dao.JPADataAccessObject
-import ru.indvdum.jpa.entities.AbstractEntity;
+import ru.indvdum.jpa.entities.AbstractEntity
 
 
 /**
@@ -100,6 +100,8 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 	 * @return created entity object
 	 */
 	protected Object createEntity(Class entityClass) {
+		if (entityClass.isInterface())
+			return null;
 		assertNotNull entityClass.annotations.find {it instanceof Entity}
 		def entity = entityClass.newInstance()
 		assert entity.class == entityClass
@@ -167,10 +169,10 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 			newValue = type.newInstance(uniqueValue++ % Byte.MAX_VALUE + 1i)
 		} else if(type == String.class) {
 			newValue = (String) "test${uniqueValue++}"
-		} else if(type instanceof Class && (type as Class).annotations.find {it instanceof Entity} != null) { // modifying of a primary keys is deprecated
+		} else if(type instanceof Class && ((type as Class).isInterface() || (type as Class).annotations.find {it instanceof Entity} != null)) { // modifying of a primary keys is deprecated
 			// an attempt to use already created entities
 			def currentValue = getFieldValue(entity, field)
-			newValue = toRemove.find {it.class == type && it != currentValue}
+			newValue = toRemove.find {it.class.isAssignableFrom(type) && it != currentValue}
 			if(newValue == null)
 				newValue = createEntity(type as Class)
 		} else if(Enum.class.isAssignableFrom(type)) {

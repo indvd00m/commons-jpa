@@ -160,6 +160,7 @@ public class JPADataAccessObject {
 	}
 
 	public <T> List<T> list(Class<T> entityClass) {
+		// TODO: check for AbstractEntity type of T
 		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(entityClass);
 		query.from(entityClass);
 		return new ArrayList(em.createQuery(query).getResultList());
