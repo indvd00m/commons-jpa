@@ -234,7 +234,7 @@ public class JPADataAccessObject {
 		query.where(cb.and(predicates.toArray(new Predicate[predicates.size()])));
 		T result = null;
 		try {
-			result = em.createQuery(query).getSingleResult();
+			result = getSingleResult(em.createQuery(query));
 		} catch (NoResultException e) {
 			log.info("Object not found in Database: " + e.getMessage());
 		}
@@ -258,7 +258,7 @@ public class JPADataAccessObject {
 		Query query = em.createQuery(jpql);
 		for (int i = 0; i < paramValues.length; i++)
 			query.setParameter(i + 1, paramValues[i]);
-		return query.getSingleResult();
+		return getSingleResult(query);
 	}
 
 	public boolean contains(Collection entities) {
