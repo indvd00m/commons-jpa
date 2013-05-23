@@ -65,6 +65,10 @@ public class JPADataAccessObject {
 		em.detach(entity);
 	}
 
+	void flush() {
+		em.flush();
+	}
+
 	protected static String getPersistenceUnitName() {
 		if (persistenceUnitName != null)
 			return persistenceUnitName;
