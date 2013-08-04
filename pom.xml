@@ -5,7 +5,7 @@
 	<groupId>ru.indvdum.jpa</groupId>
 	<artifactId>commons-jpa</artifactId>
 	<name>commons-jpa</name>
-	<version>0.2.0.1</version>
+	<version>0.2.0.2</version>
 	<packaging>jar</packaging>
 	<description>commons-jpa</description>
 	<licenses>
@@ -37,7 +37,7 @@
 		<groovy.version>2.0.5</groovy.version>
 		<jackson-jaxrs.version>1.9.11</jackson-jaxrs.version>
 		<junit.version>4.11</junit.version>
-		<openjpa.version>2.2.1</openjpa.version>
+		<openjpa.version>2.2.2</openjpa.version>
 		<slf4j-simple.version>1.7.2</slf4j-simple.version>
 
 		<!-- Plugins -->

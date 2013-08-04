@@ -12,6 +12,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.indvdum.jpa.dao.JPADataAccessObject;
 import ru.indvdum.jpa.props.Props;
 
 /**
@@ -67,11 +68,24 @@ public class DatabaseInitializer {
 			initDerby();
 	}
 
+	public static void init(String driver, String url, String username, String password, int maxActive)
+			throws NamingException, ConfigurationException {
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setUrl(url);
+		dataSource.setDriverClassName(driver);
+		dataSource.setUsername(username);
+		dataSource.setPassword(password);
+		dataSource.setMaxActive(maxActive);
+
+		init(dataSource);
+	}
+
 	public static void init(BasicDataSource dataSource) throws NamingException, ConfigurationException {
 		InitialContext context = new InitialContext();
 		BasicDataSource existedDataSource = (BasicDataSource) context.lookup(getDataSourceName());
 		if (existedDataSource == null)
 			context.bind(getDataSourceName(), dataSource);
+		JPADataAccessObject.initEntityManagerFactory();
 	}
 
 	public static void initDerby() throws NamingException, ConfigurationException {
