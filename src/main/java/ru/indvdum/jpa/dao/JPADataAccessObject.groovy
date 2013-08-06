@@ -39,7 +39,8 @@ public class JPADataAccessObject {
 	protected EntityTransaction tx = null;
 
 	JPADataAccessObject() {
-		if (isTransactional()) {
+		boolean transactional = isTransactional();
+		if (transactional) {
 			tx = em.getTransaction();
 			tx.begin();
 		}
