@@ -293,7 +293,7 @@ public class JPADataAccessObject {
 		return em.contains(entity);
 	}
 
-	private Object getSingleResult(Query query) {
+	protected Object getSingleResult(Query query) {
 		try {
 			return query.getSingleResult()
 		}
