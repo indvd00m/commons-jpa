@@ -10,14 +10,14 @@ import javax.persistence.Transient
 import org.apache.openjpa.util.OpenJPAId
 import org.codehaus.jackson.map.ObjectMapper
 
-import ru.indvdum.jpa.dao.JPADataAccessObject;
+import ru.indvdum.jpa.dao.JPADataAccessObject
 
 /**
  * @author 	indvdum (gotoindvdum@gmail.com)
  * @since 25.12.2011 13:26:57
  *
  */
-abstract class AbstractEntity implements Serializable {
+abstract class AbstractEntity extends GroovyObjectSupport implements Serializable, GroovyInterceptable {
 
 	@Transient
 	protected ObjectMapper mapper = new ObjectMapper()
