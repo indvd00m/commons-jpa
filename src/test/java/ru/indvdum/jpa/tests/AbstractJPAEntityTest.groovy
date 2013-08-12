@@ -177,7 +177,8 @@ abstract class AbstractJPAEntityTest extends AbstractJPATest {
 				newValue = createEntity(type as Class)
 		} else if(Enum.class.isAssignableFrom(type)) {
 			def values = type.values();
-			newValue = values[uniqueValue++ % values.size()];
+			if (values.size() > 0)
+				newValue = values[uniqueValue++ % values.size()];
 		} else if(
 				type instanceof Class 
 				&& !(
