@@ -5,7 +5,7 @@
 	<groupId>ru.indvdum.jpa</groupId>
 	<artifactId>commons-jpa</artifactId>
 	<name>commons-jpa</name>
-	<version>0.2.0.2</version>
+	<version>0.2.0.3</version>
 	<packaging>jar</packaging>
 	<description>commons-jpa</description>
 	<licenses>
@@ -31,14 +31,14 @@
 	</developers>
 	<properties>
 		<!-- Dependencies -->
-		<commons-configuration.version>1.9</commons-configuration.version>
+		<commons-configuration.version>1.10</commons-configuration.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<groovy-eclipse-compiler.version>2.5.1-1</groovy-eclipse-compiler.version>
-		<groovy.version>2.0.5</groovy.version>
+		<groovy.version>2.1.9</groovy.version>
 		<jackson-jaxrs.version>1.9.11</jackson-jaxrs.version>
 		<junit.version>4.11</junit.version>
 		<openjpa.version>2.2.2</openjpa.version>
-		<slf4j.version>1.7.2</slf4j.version>
+		<slf4j.version>1.7.5</slf4j.version>
 
 		<!-- Plugins -->
 		<build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
