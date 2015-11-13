@@ -33,31 +33,22 @@
 		<!-- Dependencies -->
 		<commons-configuration.version>1.10</commons-configuration.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
-		<groovy-eclipse-compiler.version>2.5.1-1</groovy-eclipse-compiler.version>
-		<groovy.version>2.1.9</groovy.version>
+		<groovy-eclipse-compiler.version>2.9.2-01</groovy-eclipse-compiler.version>
+		<groovy-eclipse-batch-version>2.4.3-01</groovy-eclipse-batch-version>
+		<groovy.version>2.4.5</groovy.version>
 		<jackson-jaxrs.version>1.9.11</jackson-jaxrs.version>
-		<junit.version>4.11</junit.version>
-		<openjpa.version>2.2.2</openjpa.version>
-		<slf4j.version>1.7.5</slf4j.version>
+		<junit.version>4.12</junit.version>
+		<openjpa.version>2.4.0</openjpa.version>
+		<slf4j.version>1.7.13</slf4j.version>
 
 		<!-- Plugins -->
-		<build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
-		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
-		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+		<build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
+		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
 	</properties>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<configuration>
@@ -81,9 +72,13 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<compilerArgument>nowarn</compilerArgument>
 					<verbose>true</verbose>
@@ -93,6 +88,11 @@
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-eclipse-compiler</artifactId>
 						<version>${groovy-eclipse-compiler.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-eclipse-batch</artifactId>
+						<version>${groovy-eclipse-batch-version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
