@@ -5,7 +5,7 @@
 	<groupId>ru.indvdum.jpa</groupId>
 	<artifactId>commons-jpa</artifactId>
 	<name>commons-jpa</name>
-	<version>0.2.0.3</version>
+	<version>0.2.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>commons-jpa</description>
 	<licenses>
@@ -18,10 +18,10 @@
 	</licenses>
 	<developers>
 		<developer>
-			<id>indvdum</id>
-			<name>David Veliev</name>
+			<id>indvd00m</id>
+			<name>David E. Veliev</name>
 			<email>gotoindvdum@gmail.com</email>
-			<url>http://indvdum.ru</url>
+			<url>http://indvd00m.com</url>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
