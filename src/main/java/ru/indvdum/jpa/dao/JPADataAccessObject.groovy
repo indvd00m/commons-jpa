@@ -35,7 +35,7 @@ public class JPADataAccessObject {
 	protected static Logger log = LoggerFactory.getLogger(JPADataAccessObject.class.getSimpleName());
 	protected static String persistenceUnitName = null;
 	protected static EntityManagerFactory emf = null;
-	protected EntityManager em = getEMF().createEntityManager();
+	protected EntityManager em = createEntityManager();
 	protected EntityTransaction tx = null;
 
 	JPADataAccessObject() {
@@ -76,7 +76,11 @@ public class JPADataAccessObject {
 		em.flush();
 	}
 
-	protected static EntityManagerFactory getEMF() {
+	public static EntityManager createEntityManager() {
+		return getEntityManagerFactory().createEntityManager();
+	}
+
+	public static EntityManagerFactory getEntityManagerFactory() {
 		initEntityManagerFactory();
 		return emf;
 	}
@@ -110,7 +114,7 @@ public class JPADataAccessObject {
 	}
 
 	public static Connection getSQLConnection() throws SQLException {
-		OpenJPAEntityManagerFactorySPI openjpaemf = (OpenJPAEntityManagerFactorySPI) OpenJPAPersistence.cast(getEMF());
+		OpenJPAEntityManagerFactorySPI openjpaemf = (OpenJPAEntityManagerFactorySPI) OpenJPAPersistence.cast(getEntityManagerFactory());
 		OpenJPAConfiguration conf = openjpaemf.getConfiguration();
 		DataSource ds = (DataSource) conf.getConnectionFactory();
 		return ds.getConnection();
